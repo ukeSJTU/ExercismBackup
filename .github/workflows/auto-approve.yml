@@ -1,14 +1,23 @@
-name: Auto approve
+name: Auto approve and merge
 
 on: pull_request_target
 
 jobs:
-  auto-approve:
+  auto-approve-and-merge:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
+      contents: write
     if: github.actor == 'exercism-solutions-syncer[bot]'
     steps:
       - uses: hmarr/auto-approve-action@v4
         with:
           review-message: "Auto approved automated PR"
+      
+      - name: Auto merge
+        uses: pascalgn/merge-action@v0.15.6
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          merge_method: squash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
