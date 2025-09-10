@@ -19,6 +19,9 @@ jobs:
     needs: debug
     if: github.actor == 'exercism-solutions-syncer[bot]'
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
       - name: Log merge attempt
         run: |
           echo "Attempting to auto-merge PR #${{ github.event.pull_request.number }}"
