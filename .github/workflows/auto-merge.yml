@@ -1,7 +1,7 @@
 name: Auto Merge PR
 on:
   pull_request:
-    types: [opened, synchronize, assigned]
+    types: [opened, synchronize]
 
 jobs:
   debug:
@@ -11,14 +11,13 @@ jobs:
         run: |
           echo "GitHub Actor: '${{ github.actor }}'"
           echo "PR Author: '${{ github.event.pull_request.user.login }}'"
-          echo "PR Assignees: ${{ toJson(github.event.pull_request.assignees.*.login) }}"
           echo "PR Number: ${{ github.event.pull_request.number }}"
           echo "Event Action: ${{ github.event.action }}"
 
   auto-merge:
     runs-on: ubuntu-latest
     needs: debug
-    if: github.actor == 'exercism-solutions-syncer[bot]' && contains(github.event.pull_request.assignees.*.login, 'ukeSJTU')
+    if: github.actor == 'exercism-solutions-syncer[bot]'
     steps:
       - name: Log merge attempt
         run: |
