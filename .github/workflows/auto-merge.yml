@@ -4,8 +4,20 @@ on:
     types: [opened, synchronize, assigned]
 
 jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug Information
+        run: |
+          echo "GitHub Actor: '${{ github.actor }}'"
+          echo "PR Author: '${{ github.event.pull_request.user.login }}'"
+          echo "PR Assignees: ${{ toJson(github.event.pull_request.assignees.*.login) }}"
+          echo "PR Number: ${{ github.event.pull_request.number }}"
+          echo "Event Action: ${{ github.event.action }}"
+
   auto-merge:
     runs-on: ubuntu-latest
+    needs: debug
     if: github.actor == 'exercism-solutions-syncer[bot]' && contains(github.event.pull_request.assignees.*.login, 'ukeSJTU')
     steps:
       - name: Log merge attempt
